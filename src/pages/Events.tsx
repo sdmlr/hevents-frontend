@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { generateCalendarLink } from "../utils/utils";
 import api from "../api";
 
 type Event = {
@@ -71,6 +72,40 @@ function Events() {
             <br />
             <strong>Location:</strong> {event.location}
           </p>
+
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const email = (e.target as HTMLFormElement).email.value;
+
+              try {
+                const res = await api.post("/signups", {
+                  event_id: event.id,
+                  user_email: email,
+                });
+                alert("Signed up!");
+              } catch (err) {
+                alert("Signup failed");
+                console.error(err);
+              }
+            }}
+          >
+            <input
+              type="email"
+              name="email"
+              placeholder="Your email"
+              required
+            />
+            <button type="submit">Sign up</button>
+          </form>
+          
+          <a
+            href={generateCalendarLink(event)}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <button>Add to Google Calendar</button>
+          </a>
         </div>
       ))}
     </div>
