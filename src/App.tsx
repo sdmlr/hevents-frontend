@@ -1,16 +1,24 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// import Home from './pages/Home';
-import Events from './pages/Events';
-// You can add more pages like Login, Dashboard, etc.
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Events from "./pages/Events";
+import EventDetail from "./pages/EventDetail";
+import TopNav from "./components/TopNav";
+import CalendarPage from "./pages/Calendar";
+import SignUp from "./pages/SignUp";
+import Login from "./pages/Login";
 
 function App() {
   return (
     <Router>
-      <Routes>
-        {/* <Route path="/" element={<Home />} /> */}
-        <Route path="/events" element={<Events />} />
-        {/* Add more routes as needed */}
-      </Routes>
+      <TopNav />
+      <div className="pt-16">
+        <Routes>
+          <Route path="/" element={<Events />} />
+          <Route path="/events/:id" element={<EventDetail />} />
+          <Route path="/calendar" element={<CalendarPage />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </div>
     </Router>
   );
 }
