@@ -2,7 +2,7 @@
 
 @theme {
   --color-*: initial; /* fallback rule */
-  --color-primary: #f24822;
+  --color-primary: #db1709;
   --color-white: #ffffff;
   --color-lightBorder: #d9d9d9;
   --color-lightText: #f7f7f7;
