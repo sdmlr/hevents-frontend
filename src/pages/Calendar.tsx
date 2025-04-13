@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../api";
 import { Link } from "react-router-dom";
+import { supabase } from "../supabase";
+import EventCard from "../components/EventCard";
 
 type Event = {
   id: string;
@@ -10,72 +12,117 @@ type Event = {
   time: string;
   location: string;
   image_url: string;
+  category: string;
 };
 
 function CalendarPage() {
-  const [email, setEmail] = useState("");
+  const [userEmail, setUserEmail] = useState<string | null>(null);
   const [events, setEvents] = useState<Event[]>([]);
+  const [userEvents, setUserEvents] = useState<Event[]>([]);
+  const [allEvents, setAllEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(false);
+  const [eventsLoading, setEventsLoading] = useState(false);
 
-  const fetchSignups = async () => {
-    setLoading(true);
-    try {
-      const res = await api.get(`/signups/by-email`, {
-        params: { email },
-      });
-      setEvents(res.data);
-    } catch (err) {
-      alert("Failed to load your events.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Always fetch all events (for Explore/Recommended)
+        const eventRes = await api.get("/events");
+        setAllEvents(eventRes.data);
+
+        // Fetch user and their signups (if logged in)
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (user) {
+          setUserEmail(user.email);
+          setEventsLoading(true);
+
+          const signupRes = await api.get(`/signups?email=${user.email}`);
+          console.log("User joined events:", signupRes.data);
+
+          setUserEvents(signupRes.data);
+          setEventsLoading(false);
+        } else {
+          setUserEmail(null);
+          setUserEvents([]);
+        }
+      } catch (err) {
+        console.error("Error loading data:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+
+    const { data: listener } = supabase.auth.onAuthStateChange(() => {
+      fetchData(); // Re-fetch on login/logout
+    });
+
+    return () => {
+      listener.subscription.unsubscribe();
+    };
+  }, []);
 
   return (
-    <div className="p-6">
-      <h1 className="text-xl font-semibold mb-4">My Events</h1>
+    <div className="max-w-4xl mx-auto p-6">
+      <h1 className="text-2xl font-bold mb-4">My Events</h1>
 
-      <div className="flex items-center gap-2 mb-6">
-        <input
-          type="email"
-          placeholder="Enter your email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="border px-3 py-2 rounded w-full max-w-xs"
-        />
-        <button
-          onClick={fetchSignups}
-          className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600"
-        >
-          View
-        </button>
-      </div>
+      {loading || eventsLoading ? (
+        <p>Loading...</p>
+      ) : !userEmail ? (
+        // Not logged in
+        <div className="text-gray-600">
+          <p className="mb-4">Please log in to view your calendar.</p>
+          <Link
+            to="/login"
+            className="text-white bg-primary px-4 py-2 rounded hover:bg-red-600 transition"
+          >
+            Log in
+          </Link>
 
-      {loading ? <p>Loading...</p> : null}
-
-      {events.length > 0 ? (
-        <div className="grid md:grid-cols-3 gap-4">
-          {events.map((event) => (
-            <Link to={`/events/${event.id}`} key={event.id}>
-              <div className="bg-white p-4 rounded-lg shadow-md h-[400px] flex flex-col justify-between">
-                {event.image_url && (
-                  <img
-                    src={event.image_url}
-                    alt={event.title}
-                    className="h-36 w-full object-cover rounded mb-2"
-                  />
-                )}
-                <h3 className="text-lg font-semibold">{event.title}</h3>
-                <p className="text-sm text-gray-600">{event.description}</p>
-                <p className="text-xs text-gray-500 mt-2">
-                  {event.date} @ {event.time}
-                </p>
-              </div>
-            </Link>
-          ))}
+          <div className="overflow-x-auto mt-10">
+            <h2 className="text-lg font-semibold mb-2">Explore Events</h2>
+            <div className="flex space-x-4 w-max">
+              {allEvents.slice(0, 5).map((event) => (
+                <EventCard key={event.id} event={event} />
+              ))}
+            </div>
+          </div>
+        </div>
+      ) : userEvents.length === 0 ? (
+        // Logged in, but no joined events
+        <div>
+          <p className="mb-4">You haven't joined any events yet.</p>
+          <div className="overflow-x-auto">
+            <h2 className="text-lg font-semibold mb-2">Recommended for you</h2>
+            <div className="flex space-x-4 w-max">
+              {allEvents.slice(0, 5).map((event) => (
+                <EventCard key={event.id} event={event} />
+              ))}
+            </div>
+          </div>
         </div>
       ) : (
-        !loading && <p>No events found for this email.</p>
+        // Logged in, has joined events
+        <div>
+          <p className="mb-4 text-gray-600">
+            You’ve signed up for {userEvents.length} event
+            {userEvents.length > 1 && "s"}:
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {userEvents
+              .sort(
+                (a, b) =>
+                  new Date(a.date).getTime() - new Date(b.date).getTime()
+              )
+              .map((event) => (
+                <EventCard key={event.id} event={event} />
+              ))}
+          </div>
+        </div>
       )}
     </div>
   );
