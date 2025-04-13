@@ -87,7 +87,7 @@ const TopNav = () => {
           <>
             <button
               onClick={() => setShowLogin(true)}
-              className="font-medium text-sm text-gray-600 border border-gray-300 px-3 py-1 rounded hover:bg-red-500 hover:text-white transition"
+              className="font-medium text-sm text-gray-600 border border-gray-300 px-3 py-1 rounded hover:bg-red-500 hover:text-primary transition"
             >
               Login
             </button>
