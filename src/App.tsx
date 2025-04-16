@@ -6,6 +6,7 @@ import CalendarPage from "./pages/Calendar";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import Footer from "./components/Footer";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/calendar" element={<CalendarPage />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
       </div>
       <Footer />
