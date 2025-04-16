@@ -3,17 +3,7 @@ import api from "../api";
 import { Link } from "react-router-dom";
 import { supabase } from "../supabase";
 import EventCard from "../components/EventCard";
-
-type Event = {
-  id: string;
-  title: string;
-  description: string;
-  date: string;
-  time: string;
-  location: string;
-  image_url: string;
-  category: string;
-};
+import { Event } from "../types/Event";
 
 function CalendarPage() {
   const [userEmail, setUserEmail] = useState<string | null>(null);

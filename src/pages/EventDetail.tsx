@@ -3,17 +3,7 @@ import { useEffect, useState } from "react";
 import api from "../api";
 import { generateCalendarLink } from "../utils/utils";
 import { supabase } from "../supabase";
-
-type Event = {
-  id: string;
-  title: string;
-  description: string;
-  date: string;
-  time: string;
-  location: string;
-  image_url: string;
-  category: string;
-};
+import { Event } from "../types/Event";
 
 function EventDetail() {
   const { id } = useParams();

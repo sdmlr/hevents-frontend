@@ -1,14 +1,5 @@
 import { Link } from "react-router-dom";
-
-type Event = {
-  id: string;
-  title: string;
-  description: string;
-  date: string;
-  time: string;
-  location: string;
-  image_url: string;
-};
+import { Event } from "../types/Event";
 
 const EventCard = ({ event }: { event: Event }) => (
   <Link

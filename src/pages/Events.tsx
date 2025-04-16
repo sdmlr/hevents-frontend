@@ -1,17 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../api";
-
-type Event = {
-  id: string;
-  title: string;
-  description: string;
-  date: string;
-  time: string;
-  location: string;
-  image_url: string;
-  category: string; // make sure events have a category field
-};
+import { Event } from "../types/Event";
 
 const Home = () => {
   const [events, setEvents] = useState<Event[]>([]);
