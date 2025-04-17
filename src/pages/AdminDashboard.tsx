@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import api from "../api";
 import { Event } from "../types/Event";
+import { supabase } from "../supabase";
+import { useNavigate } from "react-router-dom";
 
 const initialFormState = {
   title: "",
@@ -19,6 +21,31 @@ function AdminDashboard() {
   const [form, setForm] = useState(initialFormState);
   const [showForm, setShowForm] = useState(false);
 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const protectRoute = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+  
+      if (!user) return navigate("/login");
+  
+      const { data, error } = await supabase
+        .from("users")
+        .select("role")
+        .eq("id", user.id)
+        .single();
+  
+      if (error || data?.role !== "staff") {
+        alert("Access denied");
+        return navigate("/");
+      }
+    };
+  
+    protectRoute();
+  }, []);
+  
   useEffect(() => {
     api
       .get("/events")
@@ -34,23 +61,41 @@ function AdminDashboard() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault();  
     try {
       if (editingId) {
-        const res = await api.put(`/events/${editingId}`, form);
+        // UPDATE existing event
+        const res = await api.put(`/admin/events/${editingId}`, form);
         setEvents((prev) =>
-          prev.map((ev) => (ev.id === editingId ? res.data.data : ev))
+          prev.map((ev) => (ev.id === editingId ? res.data.data[0] : ev))
         );
       } else {
-        const res = await api.post("/events", form);
-        setEvents((prev) => [...prev, res.data.data]);
+        // CREATE new event
+        const res = await api.post("/admin/events", form);
+        setEvents((prev) => [...prev, res.data.data[0]]);
       }
+  
+      // Reset state
       setForm(initialFormState);
       setEditingId(null);
       setShowForm(false);
     } catch (err) {
       console.error("Failed to submit event:", err);
       alert("Submission failed.");
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    const confirmDelete = confirm("Are you sure you want to delete this event?");
+    if (!confirmDelete) return;
+  
+    try {
+      await api.delete(`/admin/events/${id}`);
+      setEvents((prev) => prev.filter((e) => e.id !== id));
+      alert("Event deleted");
+    } catch (err) {
+      console.error("Failed to delete event:", err);
+      alert("Delete failed");
     }
   };
 
@@ -74,27 +119,28 @@ function AdminDashboard() {
       <div className="flex-1 p-6 overflow-y-auto">
         {/* Sticky Expandable Form */}
         <div
-          className={`sticky bg-white shadow p-4 mb-1 rounded transition-all duration-300 ${
+          className={`sticky bg-white p-2 shadow mb-2 rounded transition-all duration-300 ${
             showForm ? "" : "h-14 overflow-hidden"
           }`}
         >
-          <div className="flex justify-between items-center">
+          {/* Expand/Collapse Toggle Area */}
+          <div
+            onClick={() => {
+              if (showForm) {
+                setEditingId(null);
+                setForm(initialFormState);
+              }
+              setShowForm(!showForm);
+            }}
+            className="flex justify-between items-center cursor-pointer rounded px-2 py-1"
+            title={showForm ? "Collapse" : "Expand"}
+          >
             <h2 className="text-lg font-semibold">
               {editingId ? "Edit Event" : "Create New Event"}
             </h2>
-            <button
-              onClick={() => {
-                if (showForm) {
-                  setEditingId(null);
-                  setForm(initialFormState);
-                }
-                setShowForm(!showForm);
-              }}
-              className="text-gray-500 mr-2"
-              title={showForm ? "Collapse" : "Expand"}
-            >
+            <span className="text-gray-500 text-xl">
               {showForm ? "▲" : "▼"}
-            </button>
+            </span>
           </div>
 
           {showForm && (
@@ -133,7 +179,7 @@ function AdminDashboard() {
           {loading ? (
             <p>Loading events...</p>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-4 grid-cols-2">
               {events.map((event) => (
                 <div key={event.id} className="border p-4 rounded shadow-sm">
                   <h3 className="text-lg font-semibold">{event.title}</h3>
@@ -154,20 +200,7 @@ function AdminDashboard() {
                     </button>
                     <button
                       className="bg-red-500 px-3 py-1 text-sm rounded hover:bg-red-600"
-                      onClick={async () => {
-                        if (
-                          confirm("Are you sure you want to delete this event?")
-                        ) {
-                          try {
-                            await api.delete(`/events/${event.id}`);
-                            setEvents(events.filter((e) => e.id !== event.id));
-                            alert("Event deleted");
-                          } catch (err) {
-                            console.error("Failed to delete event:", err);
-                            alert("Delete failed");
-                          }
-                        }
-                      }}
+                      onClick={() => handleDelete(event.id)}
                     >
                       Delete
                     </button>
