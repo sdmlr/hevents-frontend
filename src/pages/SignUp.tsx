@@ -12,7 +12,7 @@ const SignUp = () => {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
     });
@@ -21,19 +21,37 @@ const SignUp = () => {
       setError(error.message);
     } else {
       setMessage("Check your email for a confirmation link.");
-      // Optionally redirect after a short delay:
+
+      const userEmail = data.user?.email;
+      if (userEmail) {
+        const { error: insertError } = await supabase
+          .from("users")
+          .insert([{ email: userEmail, role: "user" }]); // default role
+
+        if (insertError) {
+          console.error("Failed to insert into users table:", insertError);
+        }
+      }
+
+      // Optionally redirect after a short delay
       setTimeout(() => navigate("/login"), 3000);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-      <form onSubmit={handleSignUp} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-md">
+      <form
+        onSubmit={handleSignUp}
+        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-md"
+      >
         <h1 className="text-2xl font-bold mb-6 text-center">Sign Up</h1>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {message && <p className="text-green-500 mb-4">{message}</p>}
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="email"
+          >
             Email
           </label>
           <input
@@ -47,7 +65,10 @@ const SignUp = () => {
           />
         </div>
         <div className="mb-6">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="password"
+          >
             Password
           </label>
           <input

@@ -11,16 +11,36 @@ const Login = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
     if (error) {
       setError(error.message);
+      return;
+    }
+
+    const userEmail = data.user?.email;
+    if (!userEmail) return;
+
+    const { data: roleData, error: roleError } = await supabase
+      .from("users")
+      .select("role")
+      .eq("email", userEmail)
+      .single();
+
+    if (roleError) {
+      setError("Login succeeded but failed to fetch role");
+      return;
+    }
+
+    localStorage.setItem("userRole", roleData.role);
+
+    if (roleData.role === "staff") {
+      navigate("/admin");
     } else {
-      // On success, navigate to home or profile
-      navigate("/");
+      navigate("/calendar");
     }
   };
 
