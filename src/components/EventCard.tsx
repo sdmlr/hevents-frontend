@@ -5,10 +5,11 @@ const EventCard = ({ event }: { event: Event }) => (
   <Link
     to={`/events/${event.id}`}
     className="flex-shrink-0 w-64 bg-white rounded-lg shadow-md overflow-hidden no-underline text-inherit mb-5"
-   >
+    aria-label={`View details for ${event.title}`}
+  >
     <img
       src={event.image_url}
-      alt={event.title}
+      alt={`Cover image for ${event.title}`}
       className="w-full h-36 object-cover"
     />
     <div className="p-4">
