@@ -45,8 +45,16 @@ const SignUp = () => {
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-md"
       >
         <h1 className="text-2xl font-bold mb-6 text-center">Sign Up</h1>
-        {error && <p className="text-red-500 mb-4">{error}</p>}
-        {message && <p className="text-green-500 mb-4">{message}</p>}
+        {error && (
+          <p className="text-red-500 mb-4" role="alert" aria-live="assertive">
+            {error}
+          </p>
+        )}
+        {message && (
+          <p className="text-green-500 mb-4" role="status" aria-live="polite">
+            {message}
+          </p>
+        )}
         <div className="mb-4">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"
