@@ -57,11 +57,15 @@ function CalendarPage() {
   }, []);
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">My Events</h1>
+    <main className="max-w-4xl mx-auto p-6">
+      <h1 className="text-2xl font-bold mb-4" tabIndex={0}>
+        My Events
+      </h1>
 
       {loading || eventsLoading ? (
-        <p>Loading...</p>
+        <p role="status" aria-live="polite">
+          Loading events...
+        </p>
       ) : !userEmail ? (
         // Not logged in
         <div className="text-gray-600">
@@ -73,7 +77,10 @@ function CalendarPage() {
             Log in
           </Link>
 
-          <div className="overflow-x-auto mt-10">
+          <div
+            className="overflow-x-auto mt-10"
+            aria-label="Explore Events Carousel"
+          >
             <h2 className="text-lg font-semibold mb-2">Explore Events</h2>
             <div className="flex space-x-4 w-max">
               {allEvents.slice(0, 5).map((event) => (
@@ -85,8 +92,13 @@ function CalendarPage() {
       ) : userEvents.length === 0 ? (
         // Logged in, but no joined events
         <div>
-          <p className="mb-4">You haven't joined any events yet.</p>
-          <div className="overflow-x-auto">
+          <p className="mb-4" role="status">
+            You haven't joined any events yet.
+          </p>
+          <div
+            className="overflow-x-auto"
+            aria-label="Recommended Events Carousel"
+          >
             <h2 className="text-lg font-semibold mb-2">Recommended for you</h2>
             <div className="flex space-x-4 w-max">
               {allEvents.slice(0, 5).map((event) => (
@@ -114,7 +126,7 @@ function CalendarPage() {
           </div>
         </div>
       )}
-    </div>
+    </main>
   );
 }
 

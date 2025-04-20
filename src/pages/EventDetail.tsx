@@ -25,7 +25,7 @@ function EventDetail() {
     };
     fetchUser();
   }, []);
-  
+
   useEffect(() => {
     api
       .get("/events")
@@ -48,15 +48,26 @@ function EventDetail() {
   if (!event) return <p>Event not found</p>;
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
+    <main
+      className="max-w-2xl mx-auto p-6"
+      aria-labelledby="event-detail-heading"
+    >
       <img
         src={event.image_url}
-        alt={event.title}
+        alt={`Image for ${event.title}`}
         className="w-full h-64 object-cover rounded mb-6"
       />
-      <h1 className="text-3xl font-bold text-primary mb-2">{event.title}</h1>
+      <h1
+        id="event-detail-heading"
+        className="text-3xl font-bold text-primary mb-2"
+      >
+        {event.title}
+      </h1>
       <p className="text-gray-600 mb-4">{event.description}</p>
-      <div className="text-sm text-gray-500 mb-6">
+      <section
+        aria-label="Event details"
+        className="text-sm text-gray-500 mb-6"
+      >
         <p>
           <strong>Date:</strong> {event.date}
         </p>
@@ -66,7 +77,7 @@ function EventDetail() {
         <p>
           <strong>Location:</strong> {event.location}
         </p>
-      </div>
+      </section>
 
       {/* Only show form if user is logged in */}
       {userEmail ? (
@@ -85,6 +96,7 @@ function EventDetail() {
               console.error(err);
             }
           }}
+          aria-label="Signup form"
           className="mb-4"
         >
           <p className="mb-2 text-sm text-gray-600">
@@ -100,9 +112,9 @@ function EventDetail() {
       ) : (
         <div className="text-sm text-gray-500 italic mb-4">
           You need to{" "}
-          <a href="/login" className="text-primary underline">
+          <Link to="/login" className="text-primary underline" role="link">
             log in
-          </a>{" "}
+          </Link>{" "}
           to sign up for this event.
         </div>
       )}
@@ -112,15 +124,21 @@ function EventDetail() {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <button className="bg-lightBorder hover:bg-primary hover:text-white transition px-4 py-2 rounded">
+        <button
+          type="button"
+          className="bg-lightBorder hover:bg-primary hover:text-white transition px-4 py-2 rounded"
+        >
           Add to Google Calendar
         </button>
       </a>
 
       {/* 🔍 OTHER EVENTS YOU MIGHT LIKE */}
       {event && allEvents.length > 0 && (
-        <div className="mt-12">
-          <h2 className="text-xl font-semibold mb-4">
+        <section className="mt-12" aria-labelledby="related-events-heading">
+          <h2
+            id="related-events-heading"
+            className="text-xl font-semibold mb-4"
+          >
             Other events you might like
           </h2>
           <div className="flex overflow-x-auto space-x-4 pb-2">
@@ -129,33 +147,42 @@ function EventDetail() {
                 (e) => e.category === event.category && e.id !== event.id // same category, not the current event
               )
               .map((relatedEvent) => (
-                <Link
+                <article
                   key={relatedEvent.id}
-                  to={`/events/${relatedEvent.id}`}
+                  aria-labelledby={`related-event-${relatedEvent.id}`}
                   className="flex-shrink-0 w-64 bg-white rounded-lg shadow-md overflow-hidden"
                 >
-                  <img
-                    src={relatedEvent.image_url}
-                    alt={relatedEvent.title}
-                    className="w-full h-36 object-cover"
-                  />
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold">
-                      {relatedEvent.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 line-clamp-2">
-                      {relatedEvent.description}
-                    </p>
-                    <p className="text-xs text-gray-500 mt-1">
-                      {relatedEvent.date} at {relatedEvent.time}
-                    </p>
-                  </div>
-                </Link>
+                  <Link
+                    key={relatedEvent.id}
+                    to={`/events/${relatedEvent.id}`}
+                    className="block no-underline text-inherit"
+                  >
+                    <img
+                      src={relatedEvent.image_url}
+                      alt={`Image for ${relatedEvent.title}`}
+                      className="w-full h-36 object-cover"
+                    />
+                    <div className="p-4">
+                      <h3
+                        id={`related-event-${relatedEvent.id}`}
+                        className="text-lg font-semibold"
+                      >
+                        {relatedEvent.title}
+                      </h3>
+                      <p className="text-sm text-gray-600 line-clamp-2">
+                        {relatedEvent.description}
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        {relatedEvent.date} at {relatedEvent.time}
+                      </p>
+                    </div>
+                  </Link>
+                </article>
               ))}
           </div>
-        </div>
+        </section>
       )}
-    </div>
+    </main>
   );
 }
 
