@@ -59,6 +59,9 @@ const LoginModal = ({ onClose }: Props) => {
 
   return (
     <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
       className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-xs bg-black/50"
       onClick={onClose} // close if backdrop clicked
     >
@@ -70,6 +73,7 @@ const LoginModal = ({ onClose }: Props) => {
         }`}
       >
         <button
+          aria-label="Close login modal"
           onClick={onClose}
           className="absolute top-2 right-3 text-gray-400 hover:text-gray-600 text-xl"
         >
@@ -77,7 +81,12 @@ const LoginModal = ({ onClose }: Props) => {
         </button>
         <div className="bg-white rounded-lg">
           <div className="bg-primary rounded-t-lg py-3 mb-3 justify-center items-center">
-            <h2 className="text-xl font-bold text-center text-white">Login</h2>
+            <h2
+              id="modal-title"
+              className="text-xl font-bold text-center text-white"
+            >
+              Login
+            </h2>
           </div>
 
           <form onSubmit={handleLogin} className="flex flex-col gap-3 px-8">
