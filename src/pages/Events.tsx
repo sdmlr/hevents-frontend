@@ -75,7 +75,7 @@ const Home = () => {
                             to={`/events/${event.id}`}
                             className="no-underline text-inherit"
                           >
-                            <div className="w-64 h-[300px] bg-white rounded-lg shadow-md flex flex-col justify-between flex-shrink-0 mb-2 ml-2">
+                            <div className="w-64 h-[300px] bg-white rounded-lg shadow-md hover:shadow-lg transition-transform transform hover:-translate-y-1 flex flex-col justify-between flex-shrink-0 mb-2 ml-2">
                               {event.image_url && (
                                 <img
                                   src={event.image_url}
