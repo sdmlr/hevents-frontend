@@ -7,10 +7,12 @@ import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import Footer from "./components/Footer";
 import AdminDashboard from "./pages/AdminDashboard";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
     <Router>
+      <Toaster position="top-center" reverseOrder={false} />
       <TopNav />
       <div className="pt-16">
         <Routes>
