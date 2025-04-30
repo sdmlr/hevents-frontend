@@ -63,11 +63,12 @@ const TopNav = () => {
             <Link
               to={to}
               aria-current={isActive(to) ? "page" : undefined}
-              className={`transition focus:outline-none focus:ring-2 focus:ring-red-500 ${
-                isActive(to)
-                  ? "text-red-500 font-medium"
-                  : "text-gray-600 hover:text-red-500"
-              }`}
+              className={`transition focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500
+ ${
+   isActive(to)
+     ? "text-red-500 font-medium"
+     : "text-gray-600 hover:text-red-500"
+ }`}
             >
               {label}
             </Link>
@@ -86,7 +87,7 @@ const TopNav = () => {
                 className="font-medium text-sm text-gray-600 border border-gray-300 px-3 py-1 rounded hover:bg-red-500 hover:text-white transition"
               >
                 Sign Out
-              </button> 
+              </button>
             </li>
           </>
         ) : (
