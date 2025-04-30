@@ -3,6 +3,7 @@ import api from "../api";
 import { Event } from "../types/Event";
 import { supabase } from "../supabase";
 import { useNavigate } from "react-router-dom";
+import Spinner from "../components/Spinner";
 
 const initialFormState = {
   title: "",
@@ -201,7 +202,7 @@ function AdminDashboard() {
 
         <section className="overflow-y-auto max-h-[calc(100vh-8rem)] pr-2">
           {loading ? (
-            <p>Loading events...</p>
+            <Spinner />
           ) : (
             <div className="space-y-4 grid-cols-2">
               {events.map((event) => (

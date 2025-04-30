@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { supabase } from "../supabase";
 import EventCard from "../components/EventCard";
 import { Event } from "../types/Event";
+import Spinner from "../components/Spinner";
 
 function CalendarPage() {
   const [userEmail, setUserEmail] = useState<string | null>(null);
@@ -63,9 +64,7 @@ function CalendarPage() {
       </h1>
 
       {loading || eventsLoading ? (
-        <p role="status" aria-live="polite">
-          Loading events...
-        </p>
+        <Spinner />
       ) : !userEmail ? (
         // Not logged in
         <div className="text-gray-600">

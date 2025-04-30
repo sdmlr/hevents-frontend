@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../api";
 import { Event } from "../types/Event";
+import Spinner from "../components/Spinner";
 
 const Home = () => {
   const [events, setEvents] = useState<Event[]>([]);
@@ -49,7 +50,7 @@ const Home = () => {
         {/* EVENTS SECTION */}
         <div className="max-w-5xl mx-auto px-4">
           <section className="container mx-auto px-4 py-8">
-            {loading && <p className="text-center">Loading events...</p>}
+            {loading && <Spinner />}
             {error && <p className="text-center text-red-500">{error}</p>}
             {!loading &&
               !error &&
