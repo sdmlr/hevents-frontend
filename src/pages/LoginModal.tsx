@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "../supabase";
+import toast from "react-hot-toast";
 
 type Props = {
   onClose: () => void;
@@ -39,7 +40,7 @@ const LoginModal = ({ onClose }: Props) => {
       password,
     });
     if (error) {
-      alert(error.message);
+      toast.error(error.message);
       return;
     }
 
@@ -53,7 +54,7 @@ const LoginModal = ({ onClose }: Props) => {
       .single();
 
     if (roleError) {
-      alert("Login succeeded but failed to fetch role");
+      toast.error("Login succeeded but failed to fetch role");
       return;
     }
 

@@ -4,6 +4,7 @@ import { Event } from "../types/Event";
 import { supabase } from "../supabase";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../components/Spinner";
+import toast from "react-hot-toast";
 
 const initialFormState = {
   title: "",
@@ -39,7 +40,7 @@ function AdminDashboard() {
         .single();
 
       if (error || data?.role !== "staff") {
-        alert("Access denied");
+        toast.error("Access denied");
         return navigate("/");
       }
     };
@@ -70,10 +71,12 @@ function AdminDashboard() {
         setEvents((prev) =>
           prev.map((ev) => (ev.id === editingId ? res.data.data[0] : ev))
         );
+        toast.success("Event updated successfully");
       } else {
         // CREATE new event
         const res = await api.post("/admin/events", form);
         setEvents((prev) => [...prev, res.data.data[0]]);
+        toast.success("Event created successfully");
       }
 
       // Reset state
@@ -82,7 +85,7 @@ function AdminDashboard() {
       setShowForm(false);
     } catch (err) {
       console.error("Failed to submit event:", err);
-      alert("Submission failed.");
+      toast.error("Submission failed.");
     }
   };
 
@@ -95,10 +98,10 @@ function AdminDashboard() {
     try {
       await api.delete(`/admin/events/${id}`);
       setEvents((prev) => prev.filter((e) => e.id !== id));
-      alert("Event deleted");
+      toast.success("Event deleted");
     } catch (err) {
       console.error("Failed to delete event:", err);
-      alert("Delete failed");
+      toast.error("Delete failed");
     }
   };
 

@@ -4,6 +4,7 @@ import api from "../api";
 import { generateCalendarLink } from "../utils/utils";
 import { supabase } from "../supabase";
 import { Event } from "../types/Event";
+import toast from "react-hot-toast";
 
 function EventDetail() {
   const { id } = useParams();
@@ -90,9 +91,9 @@ function EventDetail() {
                 event_id: event.id,
                 user_email: userEmail,
               });
-              alert("You’ve successfully signed up!");
+              toast.success("You’ve successfully signed up!");
             } catch (err) {
-              alert("Signup failed.");
+              toast.error("Signup failed.");
               console.error(err);
             }
           }}
