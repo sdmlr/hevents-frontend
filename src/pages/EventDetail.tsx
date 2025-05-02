@@ -20,7 +20,6 @@ function EventDetail() {
     const fetchUser = async () => {
       const {
         data: { user },
-        error,
       } = await supabase.auth.getUser();
       if (user) {
         setUserEmail(user?.email ?? null);
