@@ -14,6 +14,7 @@ function EventDetail() {
   const [error, setError] = useState<string | null>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [allEvents, setAllEvents] = useState<Event[]>([]);
+  const [alreadySignedUp, setAlreadySignedUp] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -23,10 +24,22 @@ function EventDetail() {
       } = await supabase.auth.getUser();
       if (user) {
         setUserEmail(user.email);
+
+        // Check if already signed up
+        try {
+          const { data: joinedEvents } = await api.get(
+            `/signups?email=${user.email}`
+          );
+
+          const found = joinedEvents.some((ev: Event) => ev.id === id);
+          setAlreadySignedUp(found);
+        } catch (err) {
+          console.error("Failed to fetch signups", err);
+        }
       }
     };
     fetchUser();
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     api
@@ -83,34 +96,47 @@ function EventDetail() {
 
       {/* Only show form if user is logged in */}
       {userEmail ? (
-        <form
-          onSubmit={async (e) => {
-            e.preventDefault();
-
-            try {
-              await api.post("/signups", {
-                event_id: event.id,
-                user_email: userEmail,
-              });
-              toast.success("You’ve successfully signed up!");
-            } catch (err) {
-              toast.error("Signup failed.");
-              console.error(err);
-            }
-          }}
-          aria-label="Signup form"
-          className="mb-4"
-        >
-          <p className="mb-2 text-sm text-gray-600">
-            You're signing up as <strong>{userEmail}</strong>
+        alreadySignedUp ? (
+          <p className="text-sm text-green-600 font-medium mb-4">
+            You’ve already signed up for this event.
           </p>
-          <button
-            type="submit"
-            className="bg-primary text-white px-4 py-2 rounded"
+        ) : (
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault();
+
+              try {
+                await api.post("/signups", {
+                  event_id: event.id,
+                  user_email: userEmail,
+                });
+                toast.success("You’ve successfully signed up!");
+
+                // Re-fetch joined events
+                const { data: joinedEvents } = await api.get(
+                  `/signups?email=${userEmail}`
+                );
+                const found = joinedEvents.some((ev: Event) => ev.id === id);
+                setAlreadySignedUp(found);
+              } catch (err) {
+                toast.error("Signup failed.");
+                console.error(err);
+              }
+            }}
+            aria-label="Signup form"
+            className="mb-4"
           >
-            Confirm Signup
-          </button>
-        </form>
+            <p className="mb-2 text-sm text-gray-600">
+              You're signing up as <strong>{userEmail}</strong>
+            </p>
+            <button
+              type="submit"
+              className="bg-primary text-white px-4 py-2 rounded"
+            >
+              Confirm Signup
+            </button>
+          </form>
+        )
       ) : (
         <div className="text-sm text-gray-500 italic mb-4">
           You need to{" "}
