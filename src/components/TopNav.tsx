@@ -70,7 +70,7 @@ const TopNav = () => {
         {[
           { to: "/", label: "Home" },
           { to: "/calendar", label: "Calendar" },
-          { to: "/profile", label: "Profile" },
+          { to: "/browse", label: "Browse" },
         ].map(({ to, label }) => (
           <li key={to}>
             <Link
