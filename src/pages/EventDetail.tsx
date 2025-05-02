@@ -5,6 +5,7 @@ import { generateCalendarLink } from "../utils/utils";
 import { supabase } from "../supabase";
 import { Event } from "../types/Event";
 import toast from "react-hot-toast";
+import Spinner from "../components/Spinner";
 
 function EventDetail() {
   const { id } = useParams();
@@ -44,7 +45,7 @@ function EventDetail() {
       });
   }, [id]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Spinner />;
   if (error) return <p>{error}</p>;
   if (!event) return <p>Event not found</p>;
 
