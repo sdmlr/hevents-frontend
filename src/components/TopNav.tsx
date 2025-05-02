@@ -7,8 +7,9 @@ const TopNav = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -52,8 +53,20 @@ const TopNav = () => {
         hevents
       </Link>
 
+      <button
+        onClick={() => setMenuOpen(!menuOpen)}
+        className="sm:hidden text-2xl text-gray-700 focus:outline-none"
+        aria-label="Toggle navigation"
+      >
+        ☰
+      </button>
+
       {/* Navigation Items */}
-      <ul className="flex gap-6 items-center text-sm">
+      <ul
+        className={`${
+          menuOpen ? "flex" : "hidden"
+        } sm:flex flex-col sm:flex-row gap-6 items-center text-sm absolute sm:static bg-white sm:bg-transparent top-16 left-0 w-full sm:w-auto shadow-md sm:shadow-none z-40 sm:z-auto px-4 sm:px-0 py-4 sm:py-0`}
+      >
         {[
           { to: "/", label: "Home" },
           { to: "/calendar", label: "Calendar" },
