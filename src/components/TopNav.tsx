@@ -46,7 +46,7 @@ const TopNav = () => {
     >
       <Link
         to="/"
-        className="text-primary text-4xl font-bold focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+        className="text-primary text-4xl font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus:ring-offset-2"
         aria-label="Go to homepage"
       >
         hevents
