@@ -17,11 +17,12 @@ const initialFormState = {
 };
 
 function AdminDashboard() {
-  const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [form, setForm] = useState(initialFormState);
   const [showForm, setShowForm] = useState(false);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [form, setForm] = useState(initialFormState);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
@@ -106,10 +107,27 @@ function AdminDashboard() {
   };
 
   return (
-    <div className="flex" role="presentation">
+    <div className="flex min-h-screen relative" role="presentation">
+      {/* Sidebar Toggle (Mobile only) */}
+      <button
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        className={`
+      fixed top-1/2 -translate-y-1/2 left-0 z-50 sm:hidden 
+      bg-gray-100 shadow-md rounded-r px-1 py-2 text-gray font-bold 
+      transition-transform duration-300 ease-in-out 
+      ${sidebarOpen ? "translate-x-64" : ""}
+    `}
+        aria-label="Toggle staff menu"
+      >
+        {sidebarOpen ? "<" : ">"}
+      </button>
+
       {/* Sidebar */}
       <aside
-        className="w-64 h-screen bg-gray-100 p-4 bg-[#f8f8f8]"
+        className={`fixed top-0 left-0 h-full w-64 bg-gray-100 p-4 z-40 transform transition-transform duration-300 ease-in-out
+      ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+      sm:relative sm:translate-x-0 sm:w-64 sm:block
+    `}
         aria-label="Staff menu"
       >
         <h2 id="staff-menu-heading" className="text-xl font-bold mb-6">
@@ -127,43 +145,35 @@ function AdminDashboard() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-6 overflow-y-auto" role="main">
+      <main className="flex-1 p-6" role="main">
         {/* Sticky Expandable Form */}
         <section
           aria-labelledby="event-form-heading"
-          className={`sticky bg-white p-2 shadow mb-2 rounded transition-all duration-300 ${
-            showForm ? "" : "h-14 overflow-hidden"
+          className={`sticky top-16 z-30 mb-3 bg-white shadow rounded overflow-hidden transition-all duration-300 ${
+            showForm ? "max-h-[1000px]" : "max-h-16"
           }`}
         >
-          {/* Expand/Collapse Toggle Area */}
-          <div
-            onClick={() => {
-              if (showForm) {
-                setEditingId(null);
-                setForm(initialFormState);
-              }
-              setShowForm(!showForm);
-            }}
-            className="flex justify-between items-center cursor-pointer rounded px-2 py-1"
-            title={showForm ? "Collapse" : "Expand"}
-            role="button"
-            aria-expanded={showForm}
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                setShowForm(!showForm);
-              }
-            }}
-          >
+          {/* Header Row with Title + Arrow */}
+          <div className="flex justify-between items-center px-4 py-2">
             <h2 id="event-form-heading" className="text-lg font-semibold">
-              {editingId ? "Edit Event" : "Create New Event"}
+              Manage Event
             </h2>
-            <span className="text-gray-500 text-xl">
+            <button
+              onClick={() => {
+                if (showForm) {
+                  setEditingId(null);
+                  setForm(initialFormState);
+                }
+                setShowForm(!showForm);
+              }}
+              className="text-gray-500 text-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+              title={showForm ? "Collapse form" : "Expand form"}
+              aria-expanded={showForm}
+              aria-controls="event-form"
+            >
               {showForm ? "▲" : "▼"}
-            </span>
+            </button>
           </div>
-
           {showForm && (
             <form onSubmit={handleSubmit} className="space-y-3 mt-3">
               {[
@@ -201,49 +211,79 @@ function AdminDashboard() {
               </button>
             </form>
           )}
+
+          {/* Bottom Arrow Toggle */}
+          {showForm && (
+            <div className="text-center mt-3 border-t border-gray-200 py-2">
+              <button
+                onClick={() => {
+                  setEditingId(null);
+                  setForm(initialFormState);
+                  setShowForm(false);
+                }}
+                className="text-sm text-gray-500 hover:text-red-500"
+                aria-label="Collapse form"
+              >
+                ▲ Collapse
+              </button>
+            </div>
+          )}
         </section>
 
-        <section className="overflow-y-auto max-h-[calc(100vh-8rem)] pr-2">
+        <section>
           {loading ? (
             <Spinner />
           ) : (
-            <div className="space-y-4 grid-cols-2">
+            <div className="space-y-4 grid-cols-2 p-1">
               {events.map((event) => (
                 <article
                   key={event.id}
-                  className="border p-4 rounded shadow-sm"
+                  className="border rounded shadow-sm flex h-36 overflow-hidden"
                   aria-labelledby={`event-${event.id}`}
                 >
-                  <h3
-                    id={`event-${event.id}`}
-                    className="text-lg font-semibold"
-                  >
-                    {event.title}
-                  </h3>
-                  <p className="text-sm text-gray-600">
-                    {event.date} at {event.time}
-                  </p>
-                  <p className="text-sm text-gray-500">{event.location}</p>
-                  <div className="mt-2 flex gap-2">
-                    <button
-                      className="bg-yellow-400 px-3 py-1 text-sm rounded hover:bg-yellow-500"
-                      onClick={() => {
-                        setEditingId(event.id);
-                        setForm({ ...event });
-                        setShowForm(true);
-                      }}
-                      aria-label={`Edit ${event.title}`}
+                  <div className="w-2/3 flex flex-col justify-between p-4">
+                    <h3
+                      id={`event-${event.id}`}
+                      className="text-lg font-semibold"
                     >
-                      Edit
-                    </button>
-                    <button
-                      className="bg-red-500 px-3 py-1 text-sm rounded hover:bg-red-600"
-                      onClick={() => handleDelete(event.id)}
-                      aria-label={`Delete ${event.title}`}
-                    >
-                      Delete
-                    </button>
+                      {event.title}
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      {event.date} at {event.time}
+                    </p>
+                    <p className="text-sm text-gray-500">{event.location}</p>
+                    <div className="mt-2 flex gap-2">
+                      <button
+                        className="bg-yellow-400 px-3 py-1 text-sm rounded hover:bg-yellow-500"
+                        onClick={() => {
+                          setEditingId(event.id);
+                          setForm({ ...event });
+                          setShowForm(true);
+                        }}
+                        aria-label={`Edit ${event.title}`}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="bg-red-500 px-3 py-1 text-sm rounded hover:bg-red-600"
+                        onClick={() => handleDelete(event.id)}
+                        aria-label={`Delete ${event.title}`}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </div>
+
+                  {/* Event Image */}
+                  {event.image_url && (
+                    <div className="w-1/3 h-full">
+                      <img
+                        src={event.image_url}
+                        alt={`Image for ${event.title}`}
+                        className="w-full h-full object-cover rounded-r"
+                      />
+                    </div>
+                  )}
                 </article>
               ))}
             </div>
