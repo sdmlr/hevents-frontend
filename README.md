@@ -1,54 +1,131 @@
-# React + TypeScript + Vite
+# Hevents Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Hevents is a full-stack event listing and management platform. It allows users to browse events, sign up, and add them to their calendars. Staff members can create, update, and delete events via a dedicated admin dashboard.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Test Account Access
 
-## Expanding the ESLint configuration
+**Email:** `test@hevents.com`
+**Password:** `test1234`
+**role:** `staff`
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Use this account to:
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+* Browse and sign up for events (as a regular user)
+* Access the admin dashboard (`/admin`) if the account has the staff role
+
+---
+
+## Features 🚀
+
+### For Users:
+
+* View all events and filter by category
+* Search for events by title or location
+* Sign up for events
+* Add events to Google Calendar
+
+### For Staff:
+
+* Login via email/password
+* Create, edit, and delete events
+* Responsive admin interface with expandable event management form
+
+---
+
+## Local Setup Instructions ⚙️
+
+### Prerequisites:
+
+* Node.js & npm
+* Supabase account
+
+### 1. Clone the Repositories
+
+```
+# Frontend
+https://github.com/sdmlr/hevents-frontend
+
+# Backend
+https://github.com/sdmlr/hevents-backend
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Install Dependencies
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+# In each repo
+npm install
 ```
+
+### 3. Environment Variables
+
+Create a `.env` file in both frontend and backend:
+
+#### Frontend
+
+```
+VITE_SUPABASE_URL=your-supabase-url
+VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
+```
+
+#### Backend
+
+```
+SUPABASE_URL=your-supabase-url
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+```
+
+### 4. Run Locally
+
+```bash
+# Frontend
+npm run dev
+
+# Backend
+npm run dev
+```
+
+---
+
+## Tech Stack
+
+* Frontend: React + Tailwind CSS + React Router + Vite
+* Backend: Express + Supabase
+* Deployment: Vercel (frontend), Render (backend)
+
+---
+
+## File Structure 📂
+
+Both repos follow conventional structures:
+
+#### Frontend
+
+* `src/pages` – route pages (Home, Calendar, Browse, Admin, etc.)
+* `src/components` – shared UI components (e.g., Spinner, TopNav)
+* `src/api.ts` – Axios base configuration
+* `src/supabase.tsx` – Supabase client setup
+
+#### Backend
+
+* `src/routes` – route definitions for `/events`, `/admin`, `/signups`
+* `src/index.ts` – main server file
+* `src/supabase.ts` – Supabase client
+
+---
+
+## API Documentation 📘
+
+See `API.md` in the backend repo for all endpoint descriptions, request/response formats, and authentication requirements.
+
+---
+
+## Access Control
+
+* User roles are managed in Supabase (`users` table)
+* Protected endpoints for staff only (create/update/delete events)
+
+---
+
+> Made with ❤️ for the Hevents Project
