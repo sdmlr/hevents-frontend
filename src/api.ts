@@ -1,10 +1,12 @@
-import axios from 'axios';
+import axios from "axios";
+
+const baseURL = import.meta.env.VITE_API_URL || "http://localhost:5000"; // Fallback to localhost if VITE_API_URL is not set
 
 const api = axios.create({
-  baseURL: 'http://localhost:5000', // backend URL
-  timeout: 5000,                    // optional: set a timeout
+  baseURL,
+  timeout: 5000, // optional: set a timeout
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
