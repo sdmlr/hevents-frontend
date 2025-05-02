@@ -9,6 +9,7 @@ import Footer from "./components/Footer";
 import AdminDashboard from "./pages/AdminDashboard";
 import { Toaster } from "react-hot-toast";
 
+
 function App() {
   return (
     <Router>

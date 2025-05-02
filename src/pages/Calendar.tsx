@@ -8,7 +8,6 @@ import Spinner from "../components/Spinner";
 
 function CalendarPage() {
   const [userEmail, setUserEmail] = useState<string | null>(null);
-  const [events, setEvents] = useState<Event[]>([]);
   const [userEvents, setUserEvents] = useState<Event[]>([]);
   const [allEvents, setAllEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(false);
@@ -27,7 +26,7 @@ function CalendarPage() {
         } = await supabase.auth.getUser();
 
         if (user) {
-          setUserEmail(user.email);
+          setUserEmail(user?.email ?? null);
           setEventsLoading(true);
 
           const signupRes = await api.get(`/signups?email=${user.email}`);

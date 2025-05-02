@@ -23,7 +23,7 @@ function EventDetail() {
         error,
       } = await supabase.auth.getUser();
       if (user) {
-        setUserEmail(user.email);
+        setUserEmail(user?.email ?? null);
 
         // Check if already signed up
         try {
