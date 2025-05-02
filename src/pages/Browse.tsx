@@ -12,10 +12,11 @@ const Browse = () => {
   useEffect(() => {
     api.get("/events").then((res) => {
       setEvents(res.data);
-     
-      const uniqueCategories = Array.from(
-        new Set(res.data.map((e: Event) => e.category))
+
+      const uniqueCategories: string[] = Array.from(
+        new Set(res.data.map((e: Event) => e.category).filter(Boolean))
       );
+      
       setCategories(uniqueCategories);
     });
   }, []);
