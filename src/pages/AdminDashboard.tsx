@@ -124,10 +124,9 @@ function AdminDashboard() {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full w-64 bg-gray-100 p-4 z-40 transform transition-transform duration-300 ease-in-out
-      ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
-      sm:relative sm:translate-x-0 sm:w-64 sm:block
-    `}
+        className={`fixed top-0 left-0 h-screen w-64 bg-gray-100 p-4 z-40 transform transition-transform duration-300 ease-in-out
+    ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+    sm:relative sm:translate-x-0 sm:block`}
         aria-label="Staff menu"
       >
         <h2 id="staff-menu-heading" className="text-xl font-bold mb-6">
@@ -234,11 +233,11 @@ function AdminDashboard() {
           {loading ? (
             <Spinner />
           ) : (
-            <div className="space-y-4 grid-cols-2 p-1">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-1">
               {events.map((event) => (
                 <article
                   key={event.id}
-                  className="border rounded shadow-sm flex h-36 overflow-hidden"
+                  className="border border-gray-300 rounded shadow-sm flex h-36 overflow-hidden"
                   aria-labelledby={`event-${event.id}`}
                 >
                   <div className="w-2/3 flex flex-col justify-between p-4">
@@ -280,7 +279,7 @@ function AdminDashboard() {
                       <img
                         src={event.image_url}
                         alt={`Image for ${event.title}`}
-                        className="w-full h-full object-cover rounded-r"
+                        className="w-full h-full object-cover"
                       />
                     </div>
                   )}
