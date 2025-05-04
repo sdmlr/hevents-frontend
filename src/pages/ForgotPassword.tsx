@@ -10,7 +10,7 @@ const ForgotPassword = () => {
   const handleReset = async (e: React.FormEvent) => {
     e.preventDefault();
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: "https://hevents-frontend-sdmlrs-projects.vercel.app//reset-password"
+        redirectTo: "https://hevents-frontend-sdmlrs-projects.vercel.app/reset-password"
         ,
     });
     if (error) {
