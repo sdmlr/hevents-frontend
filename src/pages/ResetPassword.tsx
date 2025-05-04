@@ -9,7 +9,7 @@ const ResetPassword = () => {
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { data, error } = await supabase.auth.updateUser({
+    const { error } = await supabase.auth.updateUser({
       password,
     });
     if (error) {
