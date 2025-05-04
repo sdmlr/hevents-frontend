@@ -1,11 +1,13 @@
 // src/pages/ResetPassword.tsx
 import { useState } from "react";
 import { supabase } from "../supabase";
+import { useNavigate } from "react-router-dom";
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -16,6 +18,7 @@ const ResetPassword = () => {
       setError(error.message);
     } else {
       setSuccess("Password updated! You can now log in.");
+    setTimeout(() => navigate("/login"), 2000);
     }
   };
 
