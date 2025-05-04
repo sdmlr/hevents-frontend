@@ -93,10 +93,18 @@ const Login = () => {
         <div className="flex items-center justify-between">
           <button
             type="submit"
-            className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-primary hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           >
             Log In
           </button>
+          <p className="text-sm text-center mb-4">
+            <a
+              href="/forgot-password"
+              className="text-primary hover:text-red-600"
+            >
+              Forgot your password?
+            </a>
+          </p>
         </div>
       </form>
     </div>

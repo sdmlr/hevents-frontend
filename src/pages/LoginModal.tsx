@@ -139,6 +139,15 @@ const LoginModal = ({ onClose }: Props) => {
             >
               Join!
             </button>
+            <p className="text-sm text-center mt-2">
+              <a
+                href="/forgot-password"
+                className="text-primary hover:text-red-600"
+              >
+                Forgot your password?
+              </a>
+            </p>
+
             <p className="text-sm text-center text-gray-600 mt-1 mb-5">
               Don't have an account?{" "}
               <a
