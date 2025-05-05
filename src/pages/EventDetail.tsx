@@ -132,7 +132,7 @@ function EventDetail() {
               type="submit"
               className="bg-primary text-white px-4 py-2 rounded"
             >
-              Confirm Signup
+              Sign Up
             </button>
           </form>
         )
