@@ -75,6 +75,7 @@ const TopNav = () => {
           <li key={to}>
             <Link
               to={to}
+              onClick={() => setMenuOpen(false)}
               aria-current={isActive(to) ? "page" : undefined}
               className={`transition focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500
  ${
