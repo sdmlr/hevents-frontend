@@ -3,10 +3,12 @@ import api from "../api";
 import { Event } from "../types/Event";
 import { Link } from "react-router-dom";
 import { formatDate, formatTime } from "../utils/utils";
+import Spinner from "../components/Spinner";
 
 const Browse = () => {
-  const [events, setEvents] = useState<Event[]>([]);
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [events, setEvents] = useState<Event[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("");
 
@@ -19,6 +21,7 @@ const Browse = () => {
       );
       
       setCategories(uniqueCategories);
+      setLoading(false);
     });
   }, []);
 
@@ -59,7 +62,8 @@ const Browse = () => {
         </select>
       </div>
 
-      {filtered.length === 0 ? (
+      {loading ? ( <Spinner />
+      ) : filtered.length === 0 ? (
         <p className="text-gray-500">No events found.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
