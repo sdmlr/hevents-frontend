@@ -86,14 +86,16 @@ npm run dev
 
 ## File Structure 📂
 
-Both repos follow conventional structures:
-
-#### Frontend
-
 * `src/pages` – route pages (Home, Calendar, Browse, Admin, etc.)
 * `src/components` – shared UI components (e.g., Spinner, TopNav)
 * `src/api.ts` – Axios base configuration
 * `src/supabase.tsx` – Supabase client setup
+
+---
+
+## Deployment 🧪
+
+The frontend is deployed on [Vercel](https://hevents-frontend-sdmlrs-projects.vercel.app/).
 
 ---
 
