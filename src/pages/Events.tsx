@@ -35,7 +35,7 @@ const Home = () => {
           {/* HERO SECTION */}
           <div className="absolute inset-0 z-0 mix-blend-multiply opacity-95">
             <img
-              src="/src/assets/bg-hero-hevents.svg"
+              src="/bg-hero-hevents.svg"
               alt=""
               className="w-full h-full object-cover"
               aria-hidden="true"
