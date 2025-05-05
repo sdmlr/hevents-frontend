@@ -10,7 +10,7 @@ function CalendarPage() {
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [userEvents, setUserEvents] = useState<Event[]>([]);
   const [allEvents, setAllEvents] = useState<Event[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [eventsLoading, setEventsLoading] = useState(false);
 
   useEffect(() => {
@@ -30,10 +30,7 @@ function CalendarPage() {
           setEventsLoading(true);
 
           const signupRes = await api.get(`/signups?email=${user.email}`);
-          console.log("User joined events:", signupRes.data);
-
           setUserEvents(signupRes.data);
-          setEventsLoading(false);
         } else {
           setUserEmail(null);
           setUserEvents([]);
@@ -41,6 +38,7 @@ function CalendarPage() {
       } catch (err) {
         console.error("Error loading data:", err);
       } finally {
+        setEventsLoading(false);
         setLoading(false);
       }
     };
@@ -90,14 +88,14 @@ function CalendarPage() {
       ) : userEvents.length === 0 ? (
         // Logged in, but no joined events
         <div>
-          <p className="mb-4" role="status">
+          <p className="mb-12 text-gray-600" role="status">
             You haven't joined any events yet.
           </p>
           <div
             className="overflow-x-auto"
             aria-label="Recommended Events Carousel"
           >
-            <h2 className="text-lg font-semibold mb-2">Recommended for you</h2>
+            <h2 className="text-lg text-gray-600 font-semibold mb-2">Recommended for you</h2>
             <div className="flex space-x-4 w-max">
               {allEvents.slice(0, 5).map((event) => (
                 <EventCard key={event.id} event={event} />
@@ -112,7 +110,7 @@ function CalendarPage() {
             You’ve signed up for {userEvents.length} event
             {userEvents.length > 1 && "s"}:
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
             {userEvents
               .sort(
                 (a, b) =>
@@ -121,6 +119,17 @@ function CalendarPage() {
               .map((event) => (
                 <EventCard key={event.id} event={event} />
               ))}
+          </div>
+          <div aria-label="Recommended Events">
+            <h2 className="text-lg test-gray-600 font-semibold mb-2">Recommended for you</h2>
+            <div className="flex space-x-4 overflow-x-auto">
+              {allEvents
+                .filter((e) => !userEvents.some((u) => u.id === e.id))
+                .slice(0, 5)
+                .map((event) => (
+                  <EventCard key={event.id} event={event} />
+                ))}
+            </div>
           </div>
         </div>
       )}
