@@ -65,7 +65,7 @@ const Home = () => {
                   <div key={category} className="mb-8">
                     <h2 className="text-2xl font-semibold mb-4">{category}</h2>
                     <div
-                      className="flex overflow-x-auto space-x-4"
+                      className="flex overflow-x-auto space-x-4 py-1"
                       aria-label={`Events in ${category}`}
                     >
                       {filteredEvents.map((event) => (
