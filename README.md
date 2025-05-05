@@ -12,8 +12,8 @@ Hevents is a full-stack event listing and management platform. It allows users t
 
 Use this account to:
 
-* Browse and sign up for events (as a regular user)
-* Access the admin dashboard (`/admin`) if the account has the staff role
+* Browse and sign up for events
+* Access the admin dashboard (`/admin`) ass a staff
 
 ---
 
@@ -21,16 +21,18 @@ Use this account to:
 
 ### For Users:
 
-* View all events and filter by category
+* View all events 
+* Filter by category
 * Search for events by title or location
 * Sign up for events
 * Add events to Google Calendar
+* Browse in a mobile-friendly interface
 
 ### For Staff:
 
 * Login via email/password
 * Create, edit, and delete events
-* Responsive admin interface with expandable event management form
+* Responsive admin interface with Event management form
 
 ---
 
@@ -41,20 +43,17 @@ Use this account to:
 * Node.js & npm
 * Supabase account
 
-### 1. Clone the Repositories
+### 1. Clone the Repo
 
 ```
 # Frontend
-https://github.com/sdmlr/hevents-frontend
-
-# Backend
-https://github.com/sdmlr/hevents-backend
+git clone https://github.com/sdmlr/hevents-frontend
+cd hevents-frontend
 ```
 
 ### 2. Install Dependencies
 
 ```bash
-# In each repo
 npm install
 ```
 
@@ -62,27 +61,14 @@ npm install
 
 Create a `.env` file in both frontend and backend:
 
-#### Frontend
-
 ```
 VITE_SUPABASE_URL=your-supabase-url
 VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
 ```
 
-#### Backend
-
-```
-SUPABASE_URL=your-supabase-url
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
-```
-
 ### 4. Run Locally
 
 ```bash
-# Frontend
-npm run dev
-
-# Backend
 npm run dev
 ```
 
@@ -90,9 +76,11 @@ npm run dev
 
 ## Tech Stack
 
-* Frontend: React + Tailwind CSS + React Router + Vite
-* Backend: Express + Supabase
-* Deployment: Vercel (frontend), Render (backend)
+* React + TypeScript
+* Tailwind CSS
+* Vite
+* React Router
+* Supabase (auth + DB)
 
 ---
 
@@ -106,25 +94,6 @@ Both repos follow conventional structures:
 * `src/components` – shared UI components (e.g., Spinner, TopNav)
 * `src/api.ts` – Axios base configuration
 * `src/supabase.tsx` – Supabase client setup
-
-#### Backend
-
-* `src/routes` – route definitions for `/events`, `/admin`, `/signups`
-* `src/index.ts` – main server file
-* `src/supabase.ts` – Supabase client
-
----
-
-## API Documentation 📘
-
-See `API.md` in the backend repo for all endpoint descriptions, request/response formats, and authentication requirements.
-
----
-
-## Access Control
-
-* User roles are managed in Supabase (`users` table)
-* Protected endpoints for staff only (create/update/delete events)
 
 ---
 
