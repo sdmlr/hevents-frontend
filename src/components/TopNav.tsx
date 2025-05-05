@@ -107,7 +107,7 @@ const TopNav = () => {
           <li>
             <button
               onClick={() => setShowLogin(true)}
-              className="font-medium text-sm text-gray-600 border border-gray-300 px-3 py-1 rounded hover:bg-red-500 hover:text-primary transition"
+              className="font-medium text-sm text-gray-600 border border-gray-300 px-3 py-1 rounded hover:bg-red-500 hover:text-white transition"
               aria-haspopup="dialog"
               aria-expanded={showLogin}
               aria-controls="login-modal"

@@ -253,7 +253,7 @@ function AdminDashboard() {
                     <p className="text-sm text-gray-500">{event.location}</p>
                     <div className="mt-2 flex gap-2">
                       <button
-                        className="bg-yellow-400 px-3 py-1 text-sm rounded hover:bg-yellow-500"
+                        className="bg-primary text-white px-3 py-1 text-sm rounded hover:bg-red-600"
                         onClick={() => {
                           setEditingId(event.id);
                           setForm({ ...event });
@@ -264,7 +264,7 @@ function AdminDashboard() {
                         Edit
                       </button>
                       <button
-                        className="bg-red-500 px-3 py-1 text-sm rounded hover:bg-red-600"
+                        className="bg-gray-200 text-gray-800 px-3 py-1 text-sm rounded hover:bg-red-600 hover:text-white"
                         onClick={() => handleDelete(event.id)}
                         aria-label={`Delete ${event.title}`}
                       >

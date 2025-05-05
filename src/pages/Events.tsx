@@ -37,11 +37,11 @@ const Home = () => {
             Discover and join amazing community events around you.
           </p>
           <Link
-            to="/events"
+            to="/browse"
             role="button"
             tabIndex={0}
             aria-label="Go to events listing"
-            className="mt-6 inline-block px-6 py-3 bg-black text-brand font-semibold rounded-lg hover:bg-gray-100 transition"
+            className="mt-6 inline-block px-6 py-3 bg-black text-brand font-semibold rounded-lg hover:bg-gray-100 hover:text-primary transition"
           >
             Explore Events
           </Link>
