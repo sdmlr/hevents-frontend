@@ -72,6 +72,8 @@ VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
 npm run dev
 ```
 
+⚠️ This project requires a Supabase backend with the correct database tables and authentication policies. Refer to the backend README for database schema setup.
+
 ---
 
 ## Tech Stack
