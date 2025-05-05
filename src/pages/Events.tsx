@@ -31,21 +31,34 @@ const Home = () => {
   return (
     <main>
       <div>
-        {/* HERO SECTION */}
-        <section className="bg-primary text-white text-center py-12">
-          <h1 className="text-4xl md:text-5xl font-bold">Welcome to Hevents</h1>
-          <p className="mt-4 text-lg md:fbtext-xl">
-            Discover and join amazing community events around you.
-          </p>
-          <Link
-            to="/browse"
-            role="button"
-            tabIndex={0}
-            aria-label="Go to events listing"
-            className="mt-6 inline-block px-6 py-3 bg-black text-brand font-semibold rounded-lg hover:bg-gray-100 hover:text-primary transition"
-          >
-            Explore Events
-          </Link>
+        <section className="relative bg-primary text-white text-center py-12 overflow-hidden">
+          {/* HERO SECTION */}
+          <div className="absolute inset-0 z-0 mix-blend-multiply opacity-95">
+            <img
+              src="/src/assets/bg-hero-hevents.svg"
+              alt=""
+              className="w-full h-full object-cover"
+              aria-hidden="true"
+            />
+          </div>
+          <div className="relative z-10">
+            {" "}
+            <h1 className="text-4xl md:text-5xl font-bold">
+              Welcome to Hevents
+            </h1>
+            <p className="mt-4 text-lg md:fbtext-xl">
+              Discover and join amazing community events around you.
+            </p>
+            <Link
+              to="/browse"
+              role="button"
+              tabIndex={0}
+              aria-label="Go to events listing"
+              className="mt-6 mb-6 inline-block px-6 py-3 bg-black text-brand font-semibold rounded-lg hover:bg-gray-100 hover:text-primary transition"
+            >
+              Explore Events
+            </Link>
+          </div>
         </section>
 
         {/* EVENTS SECTION */}
