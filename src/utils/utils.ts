@@ -23,3 +23,12 @@ export function generateCalendarLink(event: {
     return url.toString();
   }
   
+  export function formatDate(dateStr: string) {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-GB'); // DD/MM/YYYY
+  }
+  
+  export function formatTime(timeStr: string) {
+    const [hour, minute] = timeStr.split(':');
+    return `${hour}:${minute}`;
+  }
