@@ -138,9 +138,6 @@ function AdminDashboard() {
             Dashboard
           </a>
           <br />
-          <a href="#" className="text-gray-600">
-            Manage Users
-          </a>
         </nav>
       </aside>
 
