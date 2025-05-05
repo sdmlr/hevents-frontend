@@ -13,7 +13,7 @@ Hevents is a full-stack event listing and management platform. It allows users t
 Use this account to:
 
 * Browse and sign up for events
-* Access the admin dashboard (`/admin`) ass a staff
+* Access the admin dashboard (`/admin`) as a staff
 
 ---
 
