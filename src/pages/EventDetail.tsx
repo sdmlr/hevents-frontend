@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../api";
-import { generateCalendarLink } from "../utils/utils";
+import { formatDate, formatTime, generateCalendarLink } from "../utils/utils";
 import { supabase } from "../supabase";
 import { Event } from "../types/Event";
 import toast from "react-hot-toast";
@@ -83,10 +83,10 @@ function EventDetail() {
         className="text-sm text-gray-500 mb-6"
       >
         <p>
-          <strong>Date:</strong> {event.date}
+          <strong>Date:</strong> {formatDate(event.date)}
         </p>
         <p>
-          <strong>Time:</strong> {event.time}
+          <strong>Time:</strong> {formatTime(event.time)}
         </p>
         <p>
           <strong>Location:</strong> {event.location}

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import api from "../api";
 import { Event } from "../types/Event";
 import { Link } from "react-router-dom";
+import { formatDate, formatTime } from "../utils/utils";
 
 const Browse = () => {
   const [events, setEvents] = useState<Event[]>([]);
@@ -81,7 +82,7 @@ const Browse = () => {
                   {event.description}
                 </p>
                 <p className="text-xs text-gray-500 mt-2">
-                  {event.date} at {event.time} • {event.location}
+                {formatDate(event.date)} at {formatTime(event.time)} • {event.location}
                 </p>
               </div>
             </Link>

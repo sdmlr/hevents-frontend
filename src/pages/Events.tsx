@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import api from "../api";
 import { Event } from "../types/Event";
 import Spinner from "../components/Spinner";
+import { formatDate, formatTime } from "../utils/utils";
 
 const Home = () => {
   const [events, setEvents] = useState<Event[]>([]);
@@ -95,7 +96,8 @@ const Home = () => {
                                   {event.description}
                                 </p>
                                 <p className="text-xs text-gray-500 mt-2">
-                                  <strong>{event.date}</strong> at {event.time}
+                                  <strong>{formatDate(event.date)}</strong> at{" "}
+                                  {formatTime(event.time)}
                                 </p>
                               </div>
                             </div>

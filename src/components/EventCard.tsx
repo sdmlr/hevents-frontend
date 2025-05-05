@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Event } from "../types/Event";
+import { formatDate, formatTime } from "../utils/utils";
 
 const EventCard = ({ event }: { event: Event }) => (
   <Link
@@ -16,7 +17,7 @@ const EventCard = ({ event }: { event: Event }) => (
       <h3 className="text-lg font-semibold">{event.title}</h3>
       <p className="text-sm text-gray-600 line-clamp-2">{event.description}</p>
       <p className="text-xs text-gray-500 mt-1">
-        {event.date} at {event.time}
+        {formatDate(event.date)} at {formatTime(event.time)}
       </p>
     </div>
   </Link>

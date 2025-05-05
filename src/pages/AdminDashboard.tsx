@@ -5,6 +5,7 @@ import { supabase } from "../supabase";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import toast from "react-hot-toast";
+import { formatDate, formatTime } from "../utils/utils";
 
 const initialFormState = {
   title: "",
@@ -248,7 +249,7 @@ function AdminDashboard() {
                       {event.title}
                     </h3>
                     <p className="text-sm text-gray-600">
-                      {event.date} at {event.time}
+                      {formatDate(event.date)} at {formatTime(event.time)}
                     </p>
                     <p className="text-sm text-gray-500">{event.location}</p>
                     <div className="mt-2 flex gap-2">
