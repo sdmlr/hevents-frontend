@@ -17,7 +17,7 @@ const ForgotPassword = () => {
       setError(error.message);
       setTimeout(() => setError(""), 5000);
     } else {
-      setMessage("Check your email for reset instructions.");
+      setMessage("If an account exists, a reset link has been sent.");
     }
   };
 
